@@ -17,7 +17,10 @@
                                         class="white--text align-end"
                                         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                                     >
-                                        <v-card-title>Рукопись №{{ card.id }}</v-card-title>
+                                        <v-card-title>
+                                            Рукопись №{{ card.id }}
+                                            <v-btn @click="removeManuscript(card)" text icon><v-icon color="red">mdi-trash-can-outline</v-icon></v-btn>
+                                        </v-card-title>
                                     </v-img>
 
                                     <v-card-title>
@@ -78,10 +81,14 @@ export default {
         ]
     }),
     computed: {
-        ...mapGetters(['MANUSCRIPTS'])
+        ...mapGetters(['MANUSCRIPTS', 'TASKS'])
     },
     methods: {
-        ...mapActions(['ADD_TASK'])
+        ...mapActions(['ADD_TASK']),
+        removeManuscript(item) {
+            this.$delete(this.MANUSCRIPTS, this.MANUSCRIPTS.findIndex(x => x.id === item.id))
+            this.$delete(this.TASKS, this.TASKS.findIndex(x => x.id === item.id))
+        }
     }
 }
 </script>
