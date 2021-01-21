@@ -1,28 +1,42 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="inspire">
+    <Navbar/>
+
+    <v-main>
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </v-main>
+
+    <v-footer color="blue darken-3" app absolute>
+      <v-col class="text-center py-0" cols="12">
+        <span class="white--text">Компания &copy; {{ new Date().getFullYear() }}</span>
+      </v-col>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { mapActions } from 'vuex'
+import Navbar from "./components/Navbar"
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components: { Navbar },
+  methods: {
+    ...mapActions(['START_TASKS_FILLING', 'PUSH_FIRST_WORKERS'])
+  },
+  async created() {
+    await this.PUSH_FIRST_WORKERS(7)
+    await this.START_TASKS_FILLING(4)
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 </style>
